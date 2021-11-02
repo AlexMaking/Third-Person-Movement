@@ -12,6 +12,8 @@ public class ThirdPersonMovement : MonoBehaviour
     public float gravity = -9.81f;
 
     public float turnSmoothTime = 0.1f;
+    private bool moving;
+    private bool jumping;
 
     float turnSmoothVelocity;
     Vector3 velocity;
@@ -45,6 +47,11 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
             }
+            jumping = false;
+        }
+        if (IsGrounded == false)
+        {
+            jumping = true;
         }
 
         if (direction.magnitude >= 0.1f)
@@ -55,6 +62,21 @@ public class ThirdPersonMovement : MonoBehaviour
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            moving = true;
         }
+        else
+        {
+            moving = false;
+        }
+    }
+
+    public bool isMoving()
+    {
+        return moving;
+    }
+
+    public bool isJumping()
+    {
+        return jumping;
     }
 }
